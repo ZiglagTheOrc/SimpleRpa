@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SimpleRpa", "SimpleRpa\SimpleRpa.pyproj", "{0B762D95-00F9-4496-B45E-23CF699E063A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleRpaLib", "SimpleRpaLib\SimpleRpaLib.csproj", "{939C58F9-3144-4106-B466-7BC42EA2C39D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transmissions", "Transmissions\Transmissions.csproj", "{02BB46FC-8728-4F5C-AF51-B53FC9D104EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{D5C2BAAD-E71A-4638-A547-5A10577B3E77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple3270", "Simple3270\Simple3270.csproj", "{2007413A-68CF-4A06-8634-82DA4B66966D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple3270Lib", "Simple3270Lib\Simple3270Lib.csproj", "{82FC6428-46C3-4594-AE4D-C71FAEFA62CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B762D95-00F9-4496-B45E-23CF699E063A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B762D95-00F9-4496-B45E-23CF699E063A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{939C58F9-3144-4106-B466-7BC42EA2C39D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{939C58F9-3144-4106-B466-7BC42EA2C39D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{939C58F9-3144-4106-B466-7BC42EA2C39D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{939C58F9-3144-4106-B466-7BC42EA2C39D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02BB46FC-8728-4F5C-AF51-B53FC9D104EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02BB46FC-8728-4F5C-AF51-B53FC9D104EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02BB46FC-8728-4F5C-AF51-B53FC9D104EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02BB46FC-8728-4F5C-AF51-B53FC9D104EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5C2BAAD-E71A-4638-A547-5A10577B3E77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5C2BAAD-E71A-4638-A547-5A10577B3E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5C2BAAD-E71A-4638-A547-5A10577B3E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5C2BAAD-E71A-4638-A547-5A10577B3E77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2007413A-68CF-4A06-8634-82DA4B66966D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2007413A-68CF-4A06-8634-82DA4B66966D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2007413A-68CF-4A06-8634-82DA4B66966D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2007413A-68CF-4A06-8634-82DA4B66966D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82FC6428-46C3-4594-AE4D-C71FAEFA62CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82FC6428-46C3-4594-AE4D-C71FAEFA62CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82FC6428-46C3-4594-AE4D-C71FAEFA62CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82FC6428-46C3-4594-AE4D-C71FAEFA62CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {88219BA7-E2E9-4738-AD26-13AB030DAB78}
+	EndGlobalSection
+EndGlobal

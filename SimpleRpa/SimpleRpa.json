@@ -1,0 +1,14 @@
+{
+  "protocol": "WebService",
+  "run_as_a_service": false,
+  "use_widgets_by_default": true,
+  "default_widget_duration": 2,
+  "verbose_level": 2,
+  "minimum_port": 8080,
+  "maximum_port": 8080,
+  "key": "99999999999999999999999999999999",
+  "iv": "0000000000000000",
+  "client_to_server": "ClientToServer",
+  "server_to_client": "ServerToClient",
+  "server": "localhost"
+}

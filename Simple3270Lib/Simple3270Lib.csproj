@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{82FC6428-46C3-4594-AE4D-C71FAEFA62CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Simple3270Lib</RootNamespace>
+    <AssemblyName>Simple3270Lib</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommFramework\Audit.cs" />
+    <Compile Include="CommFramework\ByteHandler.cs" />
+    <Compile Include="CommFramework\ClientSocket.cs" />
+    <Compile Include="CommFramework\Message.cs" />
+    <Compile Include="CommFramework\Semaphore.cs" />
+    <Compile Include="CommFramework\ServerSocket.cs" />
+    <Compile Include="Engine\ConnectionConfig.cs" />
+    <Compile Include="Engine\TNEmulator.cs" />
+    <Compile Include="Engine\TnXMLScreen.cs" />
+    <Compile Include="Exceptions\TNHostException.cs" />
+    <Compile Include="Exceptions\TNIdentificationException.cs" />
+    <Compile Include="Exceptions\TNRouteException.cs" />
+    <Compile Include="Interfaces\IAudit.cs" />
+    <Compile Include="Interfaces\IXMLScreen.cs" />
+    <Compile Include="Interfaces\StringAudit.cs" />
+    <Compile Include="LogParser\TN3270ClientParser.cs" />
+    <Compile Include="LogParser\TN3270HostParser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\TN3270Server.cs" />
+    <Compile Include="Server\TN3270ServerEmulationBase.cs" />
+    <Compile Include="Server\TN3270ServerException.cs" />
+    <Compile Include="Server\TNServerScreen.cs" />
+    <Compile Include="Simple3270.cs" />
+    <Compile Include="TN3270E\Constants.cs" />
+    <Compile Include="TN3270E\Delegates.cs" />
+    <Compile Include="TN3270E\Enums.cs" />
+    <Compile Include="TN3270E\EventArgs.cs" />
+    <Compile Include="TN3270E\TelnetConstants.cs" />
+    <Compile Include="TN3270E\TN3270API.cs" />
+    <Compile Include="TN3270E\X3270\Actions.cs" />
+    <Compile Include="TN3270E\X3270\AID.cs" />
+    <Compile Include="TN3270E\X3270\Ansi.cs" />
+    <Compile Include="TN3270E\X3270\Appres.cs" />
+    <Compile Include="TN3270E\X3270\CharacterGenerator.cs" />
+    <Compile Include="TN3270E\X3270\Controller.cs" />
+    <Compile Include="TN3270E\X3270\ControllerConstants.cs" />
+    <Compile Include="TN3270E\X3270\Events.cs" />
+    <Compile Include="TN3270E\X3270\ExtendedAttribute.cs" />
+    <Compile Include="TN3270E\X3270\FieldAttribute.cs" />
+    <Compile Include="TN3270E\X3270\Idle.cs" />
+    <Compile Include="TN3270E\X3270\Keyboard.cs" />
+    <Compile Include="TN3270E\X3270\KeyboardConstants.cs" />
+    <Compile Include="TN3270E\X3270\NetBuffer.cs" />
+    <Compile Include="TN3270E\X3270\Print.cs" />
+    <Compile Include="TN3270E\X3270\See.cs" />
+    <Compile Include="TN3270E\X3270\SF.cs" />
+    <Compile Include="TN3270E\X3270\Tables.cs" />
+    <Compile Include="TN3270E\X3270\Telnet.cs" />
+    <Compile Include="TN3270E\X3270\Tn3270eHeader.cs" />
+    <Compile Include="TN3270E\X3270\TNTrace.cs" />
+    <Compile Include="TN3270E\X3270\TraceFormatter.cs" />
+    <Compile Include="TN3270E\X3270\Util.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,18 @@
+﻿{
+	"run_as_a_service": true,
+	"protocol": "Win32Pipe",
+	"verbose_level": 2,
+	"key": "99999999999999999999999999999999",
+	"iv": "0000000000000000",
+	"client_to_server": "ClientToServer",
+	"server_to_client": "ServerToClient",
+	"server": "localhost",
+	"port": 23,
+	"use_ssl": false,
+	"lu": null,
+	"debug": false,
+	"terminal_type": "IBM-3278-2-E",
+	"fast_screen_mode": true,
+	"action_timeout": 1000,
+	"color_depth": 2
+}
