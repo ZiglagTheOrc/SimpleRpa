@@ -48,7 +48,6 @@ class Widget (Thread):
         Displays the widget
         :return: void
         """
-        print(self.duration)
         _widget(self.rect, self.duration)
 
     @staticmethod

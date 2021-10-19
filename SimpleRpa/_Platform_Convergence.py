@@ -575,7 +575,7 @@ if sys.platform == "darwin":
     import _Rpa_OSX as platformModule
 elif sys.platform == "win32":
     import _Rpa_Win as platformModule
-elif platform.system() == "Linux":
+elif sys.platform == "linux":
     import _Rpa_Linux as platformModule
 else:
     raise NotImplementedError("Your platform (%s) is not supported by SimpleRPA." % (platform.system()))

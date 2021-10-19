@@ -29,7 +29,7 @@ from _Widget import Widget
 from PIL import ImageGrab
 
 maps = list()
-
+ambiguities = list()
 
 def add_font(path):
     """
@@ -43,7 +43,7 @@ def add_font(path):
     else:
         fm = '/'
 
-    f = open(path + fm + "font_map.json", 'r')
+    f = open(path + fm + "fontmap.json", 'r')
     js = f.read()
     f.close()
     wr = json.loads(js)
@@ -58,12 +58,14 @@ def add_font(path):
 
     # region Load font map files and add to list of maps.
     fmp = Map()
-    fmp.name = wr['name']
-    l = len(wr['fonts'])
+    fmp.name = wr['header']['name']
+    l = len(wr['fontmap'])
     for i in range(l):
-        js0 = str(wr['fonts'][i])
-        fnt = json.loads(str.replace(js0, "'", "\""))
-        fmp.character.append(fnt['character'])
+        fnt = wr['fontmap'][i]
+        if not str(fnt['filename']).lower().endswith('.png'):
+            ambiguities.append((fnt['letter'], fnt['filename']))
+            continue
+        fmp.character.append(fnt['letter'])
         fn = path + fm + fnt['filename']
         img = cv2.imread(fn, cv2.IMREAD_COLOR)  # np.array(Image.open(fn))
         bmp = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -74,7 +76,7 @@ def add_font(path):
     # endregion
 
 
-def perform_ocr(fontmaps, rect, ocr_threshold, capture_threshold, use_widget=None, duration=0):
+def perform_ocr(fontmaps, rect, ocr_threshold, capture_threshold, use_widget=None, duration=0, px_space=4):
     """
     Captures the screen at the specified rect and perform quick ocr using specified font maps.
     :param fontmaps: The list of fontmaps to look for.
@@ -92,9 +94,12 @@ def perform_ocr(fontmaps, rect, ocr_threshold, capture_threshold, use_widget=Non
     if use_widget:
         Widget._show_widget_rect(rect, duration)
     if len(chars) == 0:
-        return '';
-    data = __sort_chars(chars)
+        return ''
+    data = __sort_chars(chars, px_space)
     text = __get_text(data)
+    for amb in ambiguities:
+        if text.__contains__(amb[1]):
+            text = __resolve_ambiguities(text)
     return text
 
 
@@ -115,12 +120,12 @@ def __capture(rect, threshold):
 
     # region Check to see if image needs inverted if so do it.
     whites = cv2.countNonZero(image) * 1.2
-    blacks = rect[0] * rect[1] - whites
+    #blacks = rect[0] * rect[1] - whites
 
     #if whites > blacks:
     #    image = image.__invert__()
 
-    #cv2.imwrite("z:\\ss.bmp", image)
+    cv2.imwrite("/home/michaelhalpin/test1.png", image)
     return image
 
 
@@ -138,15 +143,17 @@ def __get_chars(image, fontmaps, threshold):
         fontmaps = list()
         fontmaps.append(fm)
     # endregion
+    # region Match to fontmap to get each letter.
     l0 = len(maps)
     l1 = len(fontmaps)
+    map_image = list()
     for m in range(l0):
         for f in range(l1):
             if maps[m].name == fontmaps[f]:
                 l3 = len(maps[m].image)
                 for i in range(l3):
                     bmp = maps[m].image[i]
-                    res = cv2.matchTemplate(image, bmp, cv2.TM_CCOEFF_NORMED)
+                    res = cv2.matchTemplate(image, bmp, cv2.TM_CCORR_NORMED)
                     loc = np.where(res >= threshold)
                     for pt in zip(*loc[::-1]):
                         char = Character()
@@ -156,10 +163,73 @@ def __get_chars(image, fontmaps, threshold):
                         char.height = bmp.shape[0]
                         char.char = maps[m].character[i]
                         chars.append(char)
+                        map_image.append((m, i))
+    # endregion
+    # region Assemble a list of image tops to establish baselines.
+    width, height = image.shape
+    tops = list()
+    for i in range(0, height):
+        tops.append(0)
+    # endregion
+    # region TODO: There has to be a better way to do this. This section does a more precise matching for letters that occupy the same space on the image and remove the lease precise match.  (for example n matches to m as well as n)
+    lng = len(chars) - 1
+    i = 0
+    while True:
+        if i > lng:
+            break
+        tops[chars[i].top] += 1
+        n = 0
+        while True:
+            if n > lng:
+                break
+            if chars[i].left == chars[n].left and chars[i].top == chars[n].top:
+                if chars[i].char != chars[n].char:
+                    # region match to image on index i
+                    a, b = map_image[i]
+                    bmp = maps[a].image[b]
+                    pmp = image[chars[i].top:chars[i].top + chars[i].height, chars[i].left:chars[i].left + chars[i].width]
+                    n1 = np.sum(bmp == pmp)
+                    n2 = np.multiply(*bmp.shape)
+                    p1 = n1 / n2
+                    # endregion
+                    # region match to image on index n
+                    w, q = map_image[n]
+                    pxp = maps[w].image[q]
+                    pmp = image[chars[n].top:chars[n].top+chars[n].height, chars[n].left:chars[n].left+chars[n].width]
+                    n3 = np.sum(pxp == pmp)
+                    n4 = np.multiply(*pxp.shape)
+                    p2 = n3 / n4
+                    # endregion
+                    # region remove the least precise match
+                    if p1 > p2:
+                        chars.pop(n)
+                        n -= 1
+                    else:
+                        chars.pop(i)
+                        i -= 1
+                    lng -= 1
+                    # endregion
+            n += 1
+        i += 1
+    # endregion
+    # region Exclude matches that fall outside the bounds of the rest.
+    lng = len(chars) - 1
+    i = 0
+    lines = __get_common_lines(lng, tops)
+    while True:
+        if i > lng:
+            break
+        if not lines.__contains__(chars[i].top):
+            chars.pop(i)
+            lng = len(chars) - 1
+            i -= 1
+        i += 1
+    # endregion
+
     return chars
 
 
-def __sort_chars(chars):
+def __sort_chars(chars, px_space):
     """
     Takes the provided list of characters and sorts them into the order in which they appear.
     :param chars: The list of characters.
@@ -168,7 +238,7 @@ def __sort_chars(chars):
     # region convert list to numpy array and sort into groups
     l = len(chars)
     data = np.zeros((l, 5))
-    for i in range(l):
+    for i in range(l):  #TODO: remove chars struct and just pass data in numpy format outright
         data[(i, 0)] = chars[i].left
         data[(i, 1)] = chars[i].top
         data[(i, 2)] = chars[i].width
@@ -188,7 +258,34 @@ def __sort_chars(chars):
     data = np.array(sorted(data, key=lambda x: (x[1], x[0])))
     # endregion
 
+    # region remove lingering mismatches
+    lng = len(data) - 1
+    i = 0
+    while True:
+        if i > lng - 1:
+            break
+        if data[i][4] == 46 and data[i+1][4] == 39:
+            data = np.delete(data, i + 1, 0)
+            lng = len(data) - 1
+            i -= 1
+        i += 1
+    # endregion
+
+    # region Insert spaces between words.
+    lng = len(data) - 1
+    i = 0
+    while True:
+        if i == lng:
+            break
+        r = data[i][0] + data[i][2]
+        w = data[i + 1][0] - r
+        z = np.array([r+1, data[i][1], w, data[i][3], 32])
+        if w >= px_space:
+            data = np.insert(data, i + 1, z, 0)
+            lng += 1
+        i += 1
     return data
+    # endregion
 
 
 def __get_text(data):
@@ -201,25 +298,37 @@ def __get_text(data):
     txt = ''
     l = len(data)
     y = data[(0, 1)]
-    is_end_of_line = False
     for i in range(l):
         char = int(data[(i, 4)])
         if data[(i, 1)] != y:
             txt += "\r\n"
             y = data[(i, 1)]
-            is_end_of_line = True
-        if i > 0 and not is_end_of_line:
-            margin = data[(i - 1, 0)] + data[(i - 1, 3)]
-            margin = data[(i, 0)] - margin
-            if margin > 6:
-                txt += chr(char)
-                txt += " "
-                continue
 
         txt += chr(char)
-        is_end_of_line = False
     return txt
     # endregion
+
+
+def __get_common_lines(chars, lines):
+    lns = list()
+    i = 0
+    for ln in lines:
+        if ln / chars > .003:
+            lns.append(i)
+        i += 1
+    return lns
+
+
+def __resolve_ambiguities(text, ambig):
+    raise Exception('Not implemented.')
+    # Assemble list of problem words
+    # for each word is it on the list?
+    # for each word does it have a known match
+    # is this letter part of a number?
+    # is the word all caps
+    # is the char 1st letter in word
+    # what does google think the word is https://stackoverflow.com/questions/17178483/how-do-you-send-an-http-get-web-request-in-python
+    # if google matched then save match
 
 
 class Map:

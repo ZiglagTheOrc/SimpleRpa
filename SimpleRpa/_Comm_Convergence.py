@@ -30,7 +30,6 @@ import SimpleOcr
 import _Steganography
 import _Platform_Convergence as pc
 from _Platform_Convergence import Config
-from Keyboard import Console
 from colorama import Fore
 
 
@@ -55,14 +54,8 @@ def log_header(protocol):
     If verbose writes initial startup text to the console..
     :param protocol: The communications protocol we are using.
     """
-    Console.forecolor(Fore.YELLOW)
-    Console.write("SimpleRPA")
-    Console.forecolor(Fore.WHITE)
-    Console.write(" Version " + pc.version)
-    Console.forecolor(Fore.GREEN)
-    Console.writeln(" is running! (" + protocol + ")")
-    Console.forecolor(Fore.WHITE)
-
+    print(Fore.YELLOW + "SimpleRPA" + Fore.WHITE + " Version " + pc.version + Fore.GREEN +
+          " is running! (" + protocol + ")")
 
 
 def _log_request(verbose_level, wr, jsn):
@@ -74,23 +67,12 @@ def _log_request(verbose_level, wr, jsn):
     """
     verb = int(verbose_level)
     if verb == 1:
-        Console.forecolor(Fore.CYAN)
-        Console.write(str(datetime.datetime.now()))
-        Console.forecolor(Fore.GREEN)
-        Console.write(" request received for client ")
-        Console.forecolor(Fore.YELLOW)
-        Console.writeln("[" + wr['method'] + "]")
-        Console.forecolor(Fore.WHITE)
+        print(Fore.CYAN + str(datetime.datetime.now()) + Fore.GREEN + " request received for client " +
+              Fore.YELLOW + "[" + wr['method'] + "]")
     elif verb > 1:
-        Console.forecolor(Fore.CYAN)
-        Console.write(str(datetime.datetime.now()))
-        Console.forecolor(Fore.GREEN)
-        Console.write(" request received for client ")
-        Console.forecolor(Fore.YELLOW)
-        Console.writeln("[" + wr['method'] + "]")
-        Console.forecolor(Fore.BLUE)
-        Console.writeln(str(jsn).replace("'",'"').replace("True","true").replace("False","false"))
-        Console.forecolor(Fore.WHITE)
+        print(Fore.CYAN + str(datetime.datetime.now()) + Fore.GREEN + " request received for client " +
+              Fore.YELLOW + "[" + wr['method'] + "]")
+        print(Fore.BLUE + jsn)
 
 
 def _log_response(verbose_level, wr, reply):
@@ -102,23 +84,12 @@ def _log_response(verbose_level, wr, reply):
     """
     verb = int(verbose_level)
     if verb == 1:
-        Console.forecolor(Fore.CYAN)
-        Console.write(str(datetime.datetime.now()))
-        Console.forecolor(Fore.GREEN)
-        Console.write(" response sent for client ")
-        Console.forecolor(Fore.YELLOW)
-        Console.writeln("[" + wr['method'] + "]")
-        Console.forecolor(Fore.WHITE)
+        print(Fore.CYAN + str(datetime.datetime.now()) + Fore.GREEN + " response sent for client " +
+              Fore.YELLOW + "[" + wr['method'] + "]")
     elif verb > 1:
-        Console.forecolor(Fore.CYAN)
-        Console.write(str(datetime.datetime.now()))
-        Console.forecolor(Fore.GREEN)
-        Console.write(" response sent for client ")
-        Console.forecolor(Fore.YELLOW)
-        Console.writeln("[" + wr['method'] + "]")
-        Console.forecolor(Fore.BLUE)
-        Console.writeln(str(reply).replace("'",'"').replace("True","true").replace("False","false"))
-        Console.forecolor(Fore.WHITE)
+        print(Fore.CYAN + str(datetime.datetime.now()) + Fore.GREEN + " response sent for client " +
+              Fore.YELLOW + "[" + wr['method'] + "]")
+        print(Fore.BLUE + str(reply).replace("'",'"').replace("True","true").replace("False","false"))
 
 
 def _run_corresponding_method(wr, key, iv):

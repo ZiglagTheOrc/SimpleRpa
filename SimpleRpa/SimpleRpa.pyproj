@@ -2,10 +2,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>0b762d95-00f9-4496-b45e-23cf699e063a</ProjectGuid>
+    <ProjectGuid>9fd3a396-90ad-430c-a2d7-1713fb0d19d0</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>SimpleRpa.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,24 +21,23 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Keyboard.py" />
-    <Compile Include="Mouse.py" />
-    <Compile Include="Screen.py" />
-    <Compile Include="Simple3270.py" />
-    <Compile Include="SimpleOcr.py" />
-    <Compile Include="_Comm_Convergence.py" />
-    <Compile Include="_Platform_Convergence.py" />
-    <Compile Include="_Rpa_Linux.py" />
-    <Compile Include="_Rpa_OSX.py" />
-    <Compile Include="_Rpa_Win.py" />
-    <Compile Include="_Steganography.py" />
-    <Compile Include="_Web_Comm.py" />
-    <Compile Include="_Widget.py" />
-    <Compile Include="_Win32_Comm.py" />
     <Compile Include="__main__.py" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Keyboard.py" />
+    <Content Include="Mouse.py" />
+    <Content Include="Screen.py" />
     <Content Include="SimpleRpa.json" />
+    <Content Include="venv\config.json" />
+    <Content Include="_Comm_Convergence.py" />
+    <Content Include="_Platform_Convergence.py" />
+    <Content Include="_Rpa_Linux.py" />
+    <Content Include="_Rpa_OSX.py" />
+    <Content Include="_Rpa_Win.py" />
+    <Content Include="_Steganography.py" />
+    <Content Include="_Web_Comm.py" />
+    <Content Include="_Widget.py" />
+    <Content Include="_Win32_Comm.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="venv\" />

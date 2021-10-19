@@ -157,8 +157,8 @@ class Simple3270Api:
         Sends message to shut down external service upon finishing.
         :return: void
         """
-        shutdown = '{"method":"dispose_and_shutdown","content":{"content":"close_session"}}'
-        req = _Steganography.package(shutdown, self.key, self.iv)
+        shutdown = '{"content":"close_session"}'
+        req = self._package(shutdown, 'dispose_and_shutdown')
         Pipe.set(self.c2s, req)  # Send only, no need for a response.
         return
 
@@ -168,10 +168,7 @@ class Simple3270Api:
         :param jsn: The map of fields to use to gather text.
         :return: json
         """
-        if not isinstance(jsn, str):
-            jsn = json.dumps(jsn)
-        js = '{"method":"read_screen_text","content":' + jsn + '}'
-        req = _Steganography.package(js, self.key, self.iv)
+        req = self._package(jsn, 'read_screen_text')
         resp = Pipe.query(req, self.c2s, self.s2c, self.key, self.iv)
         return resp
 
@@ -181,10 +178,7 @@ class Simple3270Api:
         :param jsn: The map of fields to use to gather text.
         :return: json
         """
-        if not isinstance(jsn, str):
-            jsn = json.dumps(jsn)
-        js = '{"method":"read_screen_colors","content":' + jsn + '}'
-        req = _Steganography.package(js, self.key, self.iv)
+        req = self._package(jsn, 'read_screen_colors')
         resp = Pipe.query(req, self.c2s, self.s2c, self.key, self.iv)
         return resp
 
@@ -194,10 +188,7 @@ class Simple3270Api:
         :param jsn: The TnKey to press.
         :return: bool
         """
-        if not isinstance(jsn, str):
-            jsn = json.dumps(jsn)
-        js = '{"method":"write_screen_text","content":' + jsn + '}'
-        req = _Steganography.package(js, self.key, self.iv)
+        req = self._package(jsn, 'write_screen_text')
         resp = Pipe.query(req, self.c2s, self.s2c, self.key, self.iv)
         response = resp['response']
         if response == 'TIMEOUT':
@@ -212,8 +203,7 @@ class Simple3270Api:
         :param key: The TnKey to press.
         :return: bool
         """
-        js = '{"method":"press_key","content":{"button":"' + key + '"}}'
-        req = _Steganography.package(js, self.key, self.iv)
+        req = self._package('{"button":"' + key + '"}', 'press_key')
         resp = Pipe.query(req, self.c2s, self.s2c, self.key, self.iv)
         response = resp['response']
         if response == 'TIMEOUT':
@@ -229,10 +219,7 @@ class Simple3270Api:
         :param jsn: The json map to use.
         :return: bool
         """
-        if not isinstance(jsn, str):
-            jsn = json.dumps(jsn)
-        js = '{"method":"wait_for_text","content":' + jsn + '}'
-        req = _Steganography.package(js, self.key, self.iv)
+        req = self._package(jsn, 'wait_for_text')
         resp = Pipe.query(req, self.c2s, self.s2c, self.key, self.iv)
         response = resp['response']
         if response == 'TIMEOUT':
@@ -240,6 +227,18 @@ class Simple3270Api:
         elif response == 'EXCEPTION':
             raise Exception(resp['message'])
         return True
+
+    def _package(self, jsn, method):
+        """
+        Takes a request and packages it up into an encrypted packet.
+        :param jsn: The json message to encrypt.
+        :param method: The method that this is associated with on the server side.
+        :return: string
+        """
+        if not isinstance(jsn, str):
+            jsn = json.dumps(jsn)
+        request = '{"method":"' + method + '","content":"' + _Steganography.encrypt(jsn, self.key, self.iv) + '"}'
+        return request
 
 
 def _rand(count, level):
@@ -250,7 +249,7 @@ def _rand(count, level):
     :return: string
     """
     text = ""
-    symbols = ['!', '@', '#', '$', '%', '^', '(', ')', '-', '_', '=', '+', '[', ']', '~', ',']  # Can add more
+    symbols = ['!', '@', '#', '$', '%', '(', ')', '-', '_', '=', '+', '[', ']', '~', ',']  # Can add more
     for _ in range(count):
         r = random.randint(0, level)
         if r == 0:

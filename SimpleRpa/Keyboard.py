@@ -20,14 +20,8 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 # endregion
-import sys
 import _Platform_Convergence
 from multipledispatch import dispatch
-from colorama import Fore
-
-if sys.platform == 'win32':
-    import WConio2
-
 
 # region ENUMERATIONS
 class CKeys:
@@ -430,53 +424,3 @@ def __up(command_key):
     elif command_key == CKeys.CMD:
         _Platform_Convergence.key_up(CKeys.CMD, False, True)
 # endregion
-
-
-class Console:
-    is_test = False
-
-    @staticmethod
-    def write(text):
-        print(text, end='')
-
-    @staticmethod
-    def writeln(text):
-        print(text)
-
-    @staticmethod
-    def forecolor(color):
-        if sys.platform == 'win32' and not Console.is_test:
-            if color == Fore.RED:
-                WConio2.textcolor(WConio2.RED)
-            elif color == Fore.YELLOW:
-                WConio2.textcolor(WConio2.YELLOW)
-            elif color == Fore.CYAN:
-                WConio2.textcolor(WConio2.CYAN)
-            elif color == Fore.GREEN:
-                WConio2.textcolor(WConio2.GREEN)
-            elif color == Fore.WHITE:
-                WConio2.textcolor(WConio2.LIGHTGRAY)
-            elif color == Fore.BLUE:
-                WConio2.textcolor(WConio2.BLUE)
-            elif color == Fore.BLACK:
-                WConio2.textcolor(WConio2.BLACK)
-            elif color == Fore.MAGENTA:
-                WConio2.textcolor(WConio2.MAGENTA)
-            elif color == Fore.LIGHTRED_EX:
-                WConio2.textcolor(WConio2.LIGHTRED)
-            elif color == Fore.LIGHTYELLOW_EX:
-                WConio2.textcolor(WConio2.LIGHTGRAY)
-            elif color == Fore.LIGHTBLACK_EX:
-                WConio2.textcolor(WConio2.DARKGRAY)
-            elif color == Fore.LIGHTBLUE_EX:
-                WConio2.textcolor(WConio2.LIGHTBLUE)
-            elif color == Fore.LIGHTCYAN_EX:
-                WConio2.textcolor(WConio2.LIGHTCYAN)
-            elif color == Fore.LIGHTGREEN_EX:
-                WConio2.textcolor(WConio2.LIGHTGREEN)
-            elif color == Fore.LIGHTMAGENTA_EX:
-                WConio2.textcolor(WConio2.LIGHTMAGENTA)
-            elif color == Fore.LIGHTWHITE_EX:
-                WConio2.textcolor(WConio2.WHITE)
-        else:
-            print(color, end='')

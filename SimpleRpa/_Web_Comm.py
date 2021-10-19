@@ -27,7 +27,6 @@ import datetime
 import json
 import _Steganography
 import _Comm_Convergence as cc
-from Keyboard import Console
 from colorama import Fore
 
 
@@ -122,15 +121,7 @@ def run(port, key, iv, verbose_level=0):
     Returns: void
     """
     ip = _get_ip()
-
-    Console.forecolor(Fore.CYAN)
-    Console.write("Your machine ip is ")
-    Console.forecolor(Fore.LIGHTWHITE_EX)
-    Console.write(ip)
-    Console.forecolor(Fore.CYAN)
-    Console.writeln(" establishing service...")
-    Console.forecolor(Fore.WHITE)
-
+    print(ip)
     config = {'server.socket_host': '0.0.0.0', 'server.socket_port': port}
     cherrypy.config.update(config)
     cherrypy.quickstart(WebServer(key, iv, verbose_level))

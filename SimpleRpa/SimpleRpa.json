@@ -1,6 +1,6 @@
 {
   "protocol": "WebService",
-  "run_as_a_service": false,
+  "run_as_a_service": true,
   "use_widgets_by_default": true,
   "default_widget_duration": 2,
   "verbose_level": 2,
@@ -10,5 +10,5 @@
   "iv": "0000000000000000",
   "client_to_server": "ClientToServer",
   "server_to_client": "ServerToClient",
-  "server": "localhost"
+  "server": "10.28.16.2"
 }

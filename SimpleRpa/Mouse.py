@@ -88,7 +88,7 @@ def move(pt, duration=0.0, tween=Tweening.LINEAR, log_screenshot=False, use_widg
     :return: void
     """
     if use_widget is None:
-        use_widget = Config.use_widgits_by_default
+        use_widget = Config.use_widgets_by_default
         if duration == 0:
             duration = Config.default_widget_duration
     if use_widget:

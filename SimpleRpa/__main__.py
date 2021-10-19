@@ -77,19 +77,6 @@ def test_ocr():
     txt = Qo.perform_ocr('default', rect, .9, 175)  # Working Win Lin
 
 
-def test_3270():
-    emu = Simple3270Api("Win32Pipe", 1)
-    js1 = [{"Name":"Enterprise","X":1,"Y":1,"L":20},{"Name":"Url","X":46,"Y":2,"L":28},{"Name":"Ip","X":63,"Y":1,"L":14},{"Name":"MainFrame","X":14,"Y":5,"L":20},{"name":"NextGen","X":28,"Y":15,"L":19}]
-    js2 = [{"Name":"Login","X":1,"Y":24,"Value":"TSO"}]
-    js3 = {"Name":"WaitFor","X":12,"Y":1,"Value":"ENTER USERID -"}
-    output1 = emu.read_screen_text(js1)
-    output2 = emu.read_screen_colors(js1)
-    output3 = emu.write_screen_text(js2)
-    output4 = emu.press_key(TnKey.ENTER)
-    output5 = emu.wait_for_text(js3)
-    emu.close()
-
-
 def configure():
     jsn = open('SimpleRpa.json', 'r').read().encode().decode('utf-8-sig')
     config = json.loads(jsn)
@@ -191,11 +178,35 @@ def configure():
     # endregion
 
 
+def test_3270():
+    emu = Simple3270Api("Win32Pipe", 1)
+    js1 = [{"Name":"Enterprise","X":1,"Y":1,"L":20},{"Name":"Url","X":46,"Y":2,"L":28},{"Name":"Ip","X":63,"Y":1,"L":14},{"Name":"MainFrame","X":14,"Y":5,"L":20},{"name":"NextGen","X":28,"Y":15,"L":19}]
+    js2 = [{"Name":"Login","X":1,"Y":24,"Value":"TSO"}]
+    js3 = {"Name":"WaitFor","X":12,"Y":1,"Value":"ENTER USERID -"}
+    output1 = emu.read_screen_text(js1)
+    output2 = emu.read_screen_colors(js1)
+    output3 = emu.write_screen_text(js2)
+    output4 = emu.press_key(TnKey.ENTER)
+    output5 = emu.wait_for_text(js3)
+    emu.close()
+
+
+def run_as_service():
+    if Config.protocol == "WebService":
+        _Web_Comm.run(Config.port, Config.key, Config.iv, Config.verbose_level)
+    elif Config.protocol == "Win32Pipe":
+        _Win32_Comm.Pipe.run(Config.key, Config.iv, Config.client_to_server, Config.server_to_client, Config.verbose_level)
+
+
 if __name__ == '__main__':
     configure()
 
-    #test_mouse()
-    #test_keyboard()
-    #test_screen()
-    #test_ocr()
-    #test_3270()
+    if Config.run_as_a_service:
+        run_as_service()
+    else:
+        #test_mouse()
+        #test_keyboard()
+        #test_screen()
+        #test_ocr()
+        #test_3270()
+        print ("done")
